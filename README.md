@@ -1,6 +1,6 @@
 # AI-Based Idea Originality Score 🚀
-
-An AI-powered system to evaluate the originality and patent similarity of project and research ideas using Natural Language Processing (NLP) and semantic analysis.
+ 
+ An AI-powered system to evaluate the originality and patent similarity of project and research ideas using Natural Language Processing (NLP) and semantic analysis.
 
 ## 📌 Features
 - Originality score (0–100)
