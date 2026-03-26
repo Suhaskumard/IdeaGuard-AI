@@ -1,4 +1,3 @@
-
 def generate_abstract(idea):
     return f"""
 This paper proposes {idea}. The system leverages advanced machine learning techniques
