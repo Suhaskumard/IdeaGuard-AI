@@ -18,7 +18,7 @@ REFERENCE_IDEAS = [
 ]
 
 ref_embeddings = embedder.encode(REFERENCE_IDEAS)
-
+ 
 DOMAINS = {
     "health": ["hospital","patient","medical"],
     "ai": ["ai","machine learning","model"],
