@@ -26,29 +26,45 @@ DOMAINS = {
     "psychology": ["behavior","stress","emotion"]
 }
 
+def preprocess(text):
+    doc = nlp(text.lower())
+    return " ".join([t.lemma_ for t in doc if not t.is_stop and t.is_alpha])
+
+def domain_score(idea_emb):
+    score = 0
+    for words in DOMAINS.values():
+        dom_emb = embedder.encode(words)
+        if cosine_similarity(idea_emb, dom_emb).max() > 0.5:
+            score += 1
+    return min(score / 3, 1)
+
 def originality_analysis(idea):
-    emb = embedder.encode([idea])
+    clean_idea = preprocess(idea)
+    
+    emb = embedder.encode([clean_idea])
     sim = cosine_similarity(emb, ref_embeddings).max()
     semantic = 1 - sim
 
-    keywords = kw_extractor.extract_keywords(idea)
-    novelty = min(len([k for k,s in keywords if s > 0.02]) / 5, 1)
+    keywords = kw_extractor.extract_keywords(clean_idea)
+    novelty = min(len([k for k,s in keywords if s < 0.5]) / 5, 1)
 
-    doc = nlp(idea)
-    structure = min(len([t for t in doc if t.pos_=="VERB"]) / (len(list(doc.noun_chunks))+1), 1)
+    doc = nlp(clean_idea)
+    verbs = len([t for t in doc if t.pos_=="VERB"])
+    nouns = len(list(doc.noun_chunks))
+    structure = min(verbs / (nouns + 1), 1)
 
-    fusion = sum(any(w in idea.lower() for w in words) for words in DOMAINS.values())
-    fusion = min(fusion / 3, 1)
+    fusion = domain_score(emb)
 
-    redundancy = max(0, (len(idea.split()) - len(set(idea.split()))) / 5)
+    words = [w for w in clean_idea.split()]
+    redundancy = max(0, (len(words) - len(set(words))) / 5)
 
     score = (0.35*semantic + 0.25*novelty + 0.2*structure + 0.2*fusion) - 0.15*redundancy
     score = max(score, 0)
 
     explanation = []
     if semantic < 0.4: explanation.append("High similarity to existing ideas")
-    if novelty < 0.4: explanation.append("Lacks rare or novel concepts")
-    if fusion < 0.3: explanation.append("Single-domain idea")
-    if redundancy > 0.2: explanation.append("Buzzword repetition detected")
+    if novelty < 0.4: explanation.append("Lacks novel keywords")
+    if fusion < 0.3: explanation.append("Limited domain diversity")
+    if redundancy > 0.2: explanation.append("Repetition detected")
 
     return round(score*100,2), explanation
