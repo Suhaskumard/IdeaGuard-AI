@@ -9,7 +9,6 @@
 - Explainable feedback for low originality scores
 - Automatic research paper abstract generation
 
-
 ## 🛠 Tech Stack
 - Python
 - Sentence Transformers
