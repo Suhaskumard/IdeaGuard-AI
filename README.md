@@ -13,7 +13,7 @@
 - Python
 - Sentence Transformers
 - spaCy
-- scikit-learn
+- scikit-learn  
 - Pandas
 - NLP & Semantic Similarity
 
