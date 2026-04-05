@@ -9,7 +9,7 @@ nlp = spacy.load("en_core_web_sm")
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 kw_extractor = yake.KeywordExtractor(top=10)
 
-REFERENCE_IDEAS = [
+REFERENCE_IDEAS = [ 
     "Fake review detection using sentiment analysis",
     "Resume screening using NLP",
     "Hospital appointment no-show prediction",
