@@ -20,7 +20,7 @@ The system helps researchers, students, and innovators identify duplicate concep
 - ✅ Lightweight and notebook-friendly architecture
 
 ---
-
+ 
 # 🧠 Core Functionalities
 
 | Module | Purpose |
